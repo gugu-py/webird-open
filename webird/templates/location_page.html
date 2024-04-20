@@ -1,0 +1,158 @@
+{% extends 'common.html' %}
+{% load custom_filters %}
+
+{% block links %}
+{% endblock %}
+
+{% block css %}
+    .container{
+        float: left;
+        padding-left: 20px;
+    }
+    .container .sub{
+        float: left;
+        padding-left: 20px;
+        padding-right: 20px
+    }
+    .result {
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      transition: background-color 0.3s;
+    }
+
+    .result:hover {
+      background-color: #f9f9f9;
+    }
+    .result *{
+        display: inline;
+    }
+    .result .title {
+      font-size: 18px;
+      font-weight: 548;
+      margin-bottom: 5px;
+        color: #484747;
+    }
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .description {
+      font-size: 14px;
+      color: #777;
+    }
+    .link-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #333;
+        color: #fff;
+        text-decoration: none;
+        margin: 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .link-button:hover {
+        background-color: #555;
+    }
+    .img_container{
+        float: right;
+        margin: 20px 10px;
+    }
+    .img_container .link-button{
+        text-align: center;
+        margin-top: 30px;
+    }
+    canvas {
+      max-width: 600px;
+      margin: 50px auto;
+    }
+{% endblock %}
+
+{% block content %}
+    <div>
+    <div class="container">
+        <h2>{{ location.name }}</h2>
+        <div>{{ location.description }}</div>
+        <div class="sub">
+            <h2 class="title">species observed:</h2>
+            {% for bird in species %}
+                <div class="result">
+                    <a href="/species/{{ bird.bird_id | id_get_bird_single_name }}">
+                        <span class="title">
+                        {{ bird.bird_id | id_get_bird_whole_name}}
+                        </span>
+                        : {{ bird.num }}
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="sub">
+            <h2 class="title">records:</h2>
+            {% for item in records %}
+                <div class="result">
+                    <a href="/species/{{ item.bird_id | id_get_bird_single_name }}">
+                        <h2 class="title">
+                            {{ item.date }}
+                        </h2>
+                        <div class="description">
+                            <div style="font-weight: bold">{{ item.bird_id | id_get_bird_whole_name }}</div>
+                            <div>num: {{ item.num }}</div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+            <a href="/records/?location_id={{ location.id }}" class="link-button" target="_blank">More Records</a>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div class="img_container">
+        <img src="{{ location.img_src }}" alt="{{ location.name }} picture">
+        {% for image in images %}
+            <img src="{{ image.src }}" alt="{{ location.name }} picture">
+        {% endfor %}
+        <div>
+            <a href="/gallery/?location={{ location.id }}" class="link-button" target="_blank">More images</a>
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+    <div>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{#        <canvas id="barChart"></canvas>#}
+        <canvas id="barChart" width="1200" height="600" style="display: block;box-sizing: border-box;height: 300px;width: 1000px;"></canvas>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          var ctx = document.getElementById('barChart').getContext('2d');
+
+          var data = {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            datasets: [{
+              label: 'Monthly Average',
+              {#data: [10, 15, 20, 25, 30, 20, 15, 10, 5, 12, 18, 22],#}
+              data: {{ month_data | safe }},
+              backgroundColor: 'rgba(54, 162, 235, 0.5)',
+              borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 1
+            }]
+          };
+
+          var options = {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          };
+
+          var barChart = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: options
+          });
+        });
+      </script>
+    </div>
+    </div>
+{% endblock %}

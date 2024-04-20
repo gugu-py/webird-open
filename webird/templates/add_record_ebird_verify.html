@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>webird</title>
+</head>
+<body>
+<h3>
+    Make sure the names are correct!
+</h3>
+<h3>
+    If not, rename the species in the original file, and verify again!
+</h3>
+<h3>
+    Explain: [ebird name] -> [webird species name]
+
+</h3>
+{% for name in name_list %}
+	<p>{{ name.0 }} -> {{ name.1 }}</p>
+{% endfor %}
+<div>
+    <a href="/">return home</a>
+</div>
+<div>
+    <a href="/ebird_add_verify/upload/">confirmed the file's names are all okay, and submit</a>
+</div>
+</body>
+</html>

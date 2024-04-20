@@ -1,0 +1,6 @@
+{% load static %}
+{% load widget_tweaks %}
+<span>
+    {{ form_field.label_tag }}
+    {{ form_field | attr:"multiselect-search:true" | attr:"style:width:200px"}}
+</span>

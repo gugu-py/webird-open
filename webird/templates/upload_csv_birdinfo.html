@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>webird</title>
+</head>
+<body>
+<h1>see the example below before you upload your .csv file</h1>
+<div>
+    <a href="{% static '/file/birdinfo_example.csv' %}" target="_blank">download example</a>
+</div>
+<p> explain: not all the fields are required, but at least one field of species name should be filled in.</p>
+<form method="post" enctype="multipart/form-data" action="{{ link }}">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Upload</button>
+</form>
+</body>
+</html>

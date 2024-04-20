@@ -1,0 +1,60 @@
+{% extends 'common.html' %}
+
+{% block links %}
+{% endblock %}
+
+{% block css %}
+    .result {
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      transition: background-color 0.3s;
+    }
+
+    .result:hover {
+      background-color: #f9f9f9;
+    }
+{% endblock %}
+
+{% block content %}
+    <div class="result">
+    <a href="/add/">
+        <div>add record</div>
+    </a>
+    </div>
+    <div class="result">
+    <a href="/gallery_add/">
+        <div>add img</div>
+    </a>
+    </div>
+{#    <div class="result">#}
+{#    <a href="/img/add/">#}
+{#        <div>upload img</div>#}
+{#    </a>#}
+{#    </div>#}
+    <div class="result">
+    <a href="/img/show/">
+        <div>manage img host</div>
+    </a>
+    </div>
+    <div class="result">
+    <a href="/add_birdinfo/">
+        <div>add a new bird</div>
+    </a>
+    </div>
+    <div class="result">
+    <a href="/add_birdinfo_csv_verify/">
+        <div>add new birds through csv</div>
+    </a>
+    </div>
+    <div class="result">
+    <a href="/add_location/">
+        <div>add location</div>
+    </a>
+    </div>
+    <div class="result">
+    <a href="/ebird_add_verify/">
+        <div>submit record through ebird .csv files</div>
+    </a>
+    </div>
+{% endblock %}

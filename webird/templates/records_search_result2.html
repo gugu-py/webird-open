@@ -1,0 +1,92 @@
+{% extends 'common.html' %}
+{% load custom_filters %}
+
+{% block links %}
+{% endblock %}
+
+{% block css %}
+    .result {
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      transition: background-color 0.3s;
+    }
+
+    .result:hover {
+      background-color: #f9f9f9;
+    }
+
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .description {
+      font-size: 14px;
+      color: #777;
+    }
+
+    .pagination {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .pagination-link {
+      margin: 0 5px;
+      padding: 5px 10px;
+      color: #333;
+      text-decoration: none;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      transition: background-color 0.3s;
+    }
+
+    .pagination-link:hover {
+      background-color: #f9f9f9;
+    }
+{% endblock %}
+
+{% block content %}
+    <form method="GET">
+{#        {{ form }}#}
+        <span>{{ form.start_date.label_tag }}{{ form.start_date }}{{ form.end_date.label_tag }}{{ form.end_date }}</span>
+        <span>{{ form.location_id.label_tag }}{{ form.location_id }}</span>
+        {% include 'multi_search.html' with form_field=form.species%}
+        <input type="submit" value="submit">
+    </form>
+    {% if result.count == 0 %}
+        <div>Nobody here but us chickens!</div>
+    {% endif %}
+    {% for item in result %}
+        <div class="result">
+            <h2 class="title">
+                {{ item.date }}
+            </h2>
+            <a href="/species/{{ item.bird_id | id_get_bird_single_name }}/">
+            <div class="description">
+                <div style="font-weight: bold">{{ item.bird_id | id_get_bird_whole_name }}</div>
+                <div>num: {{ item.num }}</div>
+                <div>location: {{ item.location | id_get_location }}</div>
+            </div>
+            </a>
+            {% if user.is_authenticated %}
+            	<div>id: {{ item.id }}</div>
+                <div><a href="{{ item.id }}/">edit</a></div>
+            {% endif %} 
+        </div>
+    {% endfor %}
+
+    <div class="pagination">
+        {% if result.has_previous %}
+            <a class="pagination-link" href="?page={{ result.previous_page_number }}&{{ query_params }}">«</a>
+        {% endif %}
+
+        {{ result.number }}
+
+        {% if result.has_next %}
+            <a class="pagination-link" href="?page={{ result.next_page_number }}&{{ query_params }}">»</a>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a href="#" onclick="copyToClipboard('{{ link }}')">copy the img link</a>
+<div></div>
+<a href="/img/show/">back to show</a>
+<div></div>
+<a href="/img/add/">back to add</a>
+<div></div>
+<script src="{% static 'js/copy2clipboard.js' %}"></script>
+</body>
+</html>

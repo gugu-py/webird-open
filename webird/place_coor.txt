@@ -1,0 +1,14 @@
+xxx: top%, left%
+falculty dorm:5,69
+yushan_academy:26,82
+stu dorm:31,45
+lawn:45,54
+building1: 39,65
+theartre+glasshouse: 59,51
+internal lake: 38,73
+lake: 65,89
+wood: 65, 68
+playground: 77, 42
+kindergarten: 84,25
+
+

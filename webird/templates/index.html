@@ -1,0 +1,55 @@
+{% extends 'common.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block links %}
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/map_style.css' %}">
+{% endblock %}
+
+{% block css %}
+    .container_head{
+        background-color: navajowhite;
+    }
+    .container_head a{
+        text-decoration: none;
+        margin-left: 3px;
+    }
+    .container {
+        display: block;
+        position: relative;
+        width: fit-content;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    {% for location in locations %}
+        {% if location.display %}
+        	#{{ location.name }}{
+                top: {{ location.pos_y }}%;
+                left: {{ location.pos_x }}%;
+            }
+        {% endif %}
+    {% endfor %}
+
+{% endblock %}
+
+{% block content %}
+    <div style="font-weight: bold; font-size: large;">locations and the total birds observed</div>
+    <div class="container">
+        <img id="image" alt="img" src={% static 'img/map.png' %} >
+        <div id="markers">
+            {% for location in locations %}
+                {% if location.display %}
+                <div id="{{ location.name }}" class="marker">
+                    <a href="/location/{{ location.name }}/" target="_blank">{{ location.name }}: {{ location | location_get_total_record_num }}</a>
+                </div>
+                {% endif %}
+            {% endfor %}
+{#            {% for place in population %}#}
+{#            	<div id="{{ place.location | id_get_location }}" class="marker">#}
+{#                    <a href="/location/{{ place.location | id_get_location }}" target="_blank">{{ place.location | id_get_location }}: {{ population.total_num }}</a>#}
+{#                </div>#}
+{#            {% endfor %}#}
+
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bird Sightings Bubble Graph</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+</head>
+<body>
+  <canvas id="bubbleChart"></canvas>
+
+  <script>
+    fetch('http://127.0.0.1:8000/api/species-distribution/?bird_id=1&bird_id=2&location_id=1&location_id=2&start_date=2020-1-1&end_date=2025-1-1')
+          .then(response => response.json())
+          .then(data => {
+            const jsonData = data;
+            function determineTimeUnit(data) {
+              const minDate = moment(data[0].date);
+              const maxDate = moment(data[data.length - 1].date);
+              const duration = moment.duration(minDate.diff(maxDate));
+
+              if (duration.asYears() >= 1) {
+                return 'year';
+              } else if (duration.asMonths() >= 1) {
+                return 'month';
+              } else {
+                return 'day';
+              }
+            }
+            const timeUnit = determineTimeUnit(jsonData);
+            const categories = [...new Set(jsonData.map(item => item.location))];
+            const options = {
+              scales: {
+                x: {
+                  {#type: 'timeseries',#}
+                  type: 'time',
+                  time: {
+                    {#unit: timeUnit, // Adjust the time unit as per your requirement#}
+                    //unit: 'day', // Adjust the time unit as per your requirement
+                    parse: 'yyyy-mm-dd',
+                    displayFormats: {
+                        'day': 'dd/MMM/yyyy'
+                      }
+                  },
+                   // displayFormats:{
+                    //  day: 'DD-MM-YYYY'
+                   // }
+                    offset:true,
+                },
+                y: {
+                  type: 'category',
+                  labels: categories,
+                  offset: true,
+                },
+                // ... other scales configurations
+              },
+              // ... other chart options
+            };
+            // Group the data by "bird" field
+            const groupedData = jsonData.reduce((groups, item) => {
+              const bird = item.bird;
+              if (!groups[bird]) {
+                groups[bird] = [];
+              }
+              groups[bird].push(item);
+              return groups;
+            }, {});
+            function generateRandomColor() {
+              const r = Math.floor(Math.random() * 256); // Random value for red (0-255)
+              const g = Math.floor(Math.random() * 256); // Random value for green (0-255)
+              const b = Math.floor(Math.random() * 256); // Random value for blue (0-255)
+
+              return `rgb(${r}, ${g}, ${b}, 0.5)`;
+            }
+            const datasets = Object.keys(groupedData).map(bird => {
+                const data = groupedData[bird].map(item => {
+                    return {
+                      x: new Date(item.date),
+                      y: item.location,
+                      r: item.num*5
+                    };
+                });
+                return {
+                    label: bird,
+                    data: data,
+                    backgroundColor: generateRandomColor()
+                };
+            });
+            // Create the Bubble Chart using the datasets
+            const bubbleChart = new Chart("bubbleChart",{
+              type: 'bubble',
+              data: {
+                datasets: datasets
+              },
+              options: options,
+              //plugins: plugins
+            });
+          })
+          .catch(error => {
+            console.error('Error:', error);
+    });
+
+  </script>
+</body>
+</html>

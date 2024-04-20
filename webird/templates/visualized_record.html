@@ -1,0 +1,123 @@
+{% extends 'common.html' %}
+
+{% block links %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{#  <script src="https://cdn.jsdelivr.net/npm/moment"></script>#}
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<canvas id="bubbleChart"></canvas>
+{#<div><a href="/api/species-distribution/?{{ query_string | safe }}" style="border: 1px solid #000; padding: 5px;" >download data</a></div>#}
+<div><a href="/api/record_get_csv/{{ query_string }}" style="border: 1px solid #000; padding: 5px;" >download data</a></div>
+<form method="get" action="">
+{{ form.as_p }}
+<input type="submit" value="submit">
+</form>
+  <script>
+    fetch('/api/species-distribution/?{{ query_string | safe }}')
+          .then(response => response.json())
+          .then(data => {
+            const jsonData = data;
+            const categories = [...new Set(jsonData.map(item => item.location))];
+            const r_multiple = 5
+            const options = {
+              scales: {
+                x: {
+                  {#type: 'timeseries',#}
+                  type: 'time',
+                    {#unit:'day',#}
+                  time: {
+                    parse: 'yyyy-mm-dd',
+                    displayFormats: {
+                        'day': 'dd/MMM/yyyy'
+                      }
+                  },
+                   // displayFormats:{
+                    //  day: 'DD-MM-YYYY'
+                   // }
+                    offset:true,
+                },
+                y: {
+                  type: 'category',
+                  labels: categories,
+                  offset: true,
+                },
+                // ... other scales configurations
+              },
+              // ... other chart options
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            title: (context)=>{
+                                {#console.log(context)#}
+                                {#console.log(context)#}
+                                return context[0].dataset.label
+                            },
+                            label:function (tooltipItem, data, value){
+                                const label = bubbleChart.data.labels[tooltipItem.dataIndex];
+                                {#const a = context[0].raw.r / r_multiple#}
+                                const a = bubbleChart.data.datasets[0].data[tooltipItem.dataIndex].r/r_multiple;
+                                const date_v = formatDate(bubbleChart.data.datasets[0].data[tooltipItem.dataIndex].x)
+                                {#console.log(bubbleChart.data.datasets[0].data[tooltipItem.dataIndex].x)#}
+                                return `num: ${a}; date: ${date_v}`;
+                                {#return ['num:'+(context[0].raw.r/r_multiple)+'\n'+(context[0].raw.x)];#}
+                            },
+                        }
+                    },
+                }
+            };
+            // 自定义日期格式化函数
+            function formatDate(dateString) {
+              var dateObj = new Date(dateString);
+              var year = dateObj.getFullYear();
+              var month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
+              var day = ("0" + dateObj.getDate()).slice(-2);
+              return year + "-" + month + "-" + day;
+            }
+            // Group the data by "bird" field
+            const groupedData = jsonData.reduce((groups, item) => {
+              const bird = item.bird;
+              if (!groups[bird]) {
+                groups[bird] = [];
+              }
+              groups[bird].push(item);
+              return groups;
+            }, {});
+            function generateRandomColor() {
+              const r = Math.floor(Math.random() * 256); // Random value for red (0-255)
+              const g = Math.floor(Math.random() * 256); // Random value for green (0-255)
+              const b = Math.floor(Math.random() * 256); // Random value for blue (0-255)
+
+              return `rgb(${r}, ${g}, ${b}, 0.5)`;
+            }
+            const datasets = Object.keys(groupedData).map(bird => {
+                const data = groupedData[bird].map(item => {
+                    return {
+                      x: new Date(item.date),
+                      y: item.location,
+                      r: item.num * r_multiple
+                    };
+                });
+                return {
+                    label: bird,
+                    data: data,
+                    backgroundColor: generateRandomColor()
+                };
+            });
+            // Create the Bubble Chart using the datasets
+            const bubbleChart = new Chart("bubbleChart",{
+              type: 'bubble',
+              data: {
+                datasets: datasets
+              },
+              options: options,
+              //plugins: plugins
+            });
+          })
+          .catch(error => {
+            console.error('Error:', error);
+    });
+
+  </script>
+{% endblock %}

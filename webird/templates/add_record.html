@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>add_record</title>
+</head>
+<body>
+    <h1>Add Record</h1>
+    <div>
+        hint: use ctrl+f to find the species' name!
+    </div>
+    <form method="POST" action="/add/">
+        {% csrf_token %}
+        {{ form.as_p }}
+{#        <p>error: {{ form.errors }}</p>#}
+        {% if form.errors %}
+            <ul class="errorlist">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ field.label }}: {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <input type="submit" value="Add">
+    </form>
+
+</body>
+</html>

@@ -1,0 +1,208 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Webird</title>
+    {% block links %}{% endblock %}
+     <script src="{% static 'script/multiselect-dropdown.js' %}"></script>
+    <style>
+        * {
+            border-radius: 8px;
+        }
+        /* 普通文本输入框 */
+        input[type="text"],
+        input[type="password"],
+        textarea {
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          font-size: 14px;
+          color: #555;
+        }
+
+        /* 鼠标悬停时的效果 */
+        input[type="text"]:hover,
+        input[type="password"]:hover,
+        textarea:hover {
+          border-color: rgba(85, 167, 243, 0.28);
+        }
+
+        /* 获得焦点时的效果 */
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        textarea:focus {
+          border-color: rgba(85, 167, 243, 0.37);
+          box-shadow: 0 0 5px 0 rgba(85, 167, 243, 0.58);
+            outline: none;
+        }
+
+        /* 禁用状态下的效果 */
+        input[type="text"]:disabled,
+        input[type="password"]:disabled,
+        textarea:disabled {
+          background-color: #f5f5f5;
+          cursor: not-allowed;
+        }
+        /* 普通按钮 */
+        button,
+        input[type="button"],
+        input[type="submit"] {
+          padding: 10px 20px;
+          background-color: #55a7f3; /* 按钮背景颜色 */
+          color: #fff; /* 按钮文本颜色 */
+          border: none;
+          border-radius: 5px;
+          font-family: Arial, sans-serif;
+          font-size: 14px;
+          cursor: pointer;
+        }
+
+        /* 鼠标悬停时的效果 */
+        button:hover,
+        input[type="button"]:hover,
+        input[type="submit"]:hover {
+          background-color: #55a7f3; /* 按钮背景颜色 */
+        }
+
+        /* 获得焦点时的效果 */
+        button:focus,
+        input[type="button"]:focus,
+        input[type="submit"]:focus {
+          outline: none;
+          box-shadow: 0 0 5px 0 rgba(0, 123, 255, 0.5); /* 按钮阴影效果 */
+        }
+
+        /* 禁用状态下的效果 */
+        button:disabled,
+        input[type="button"]:disabled,
+        input[type="submit"]:disabled {
+          opacity: 0.5; /* 按钮透明度 */
+          cursor: not-allowed;
+        }
+    body{
+        background-color: rgb(245, 245, 245);
+        margin:0;
+    }
+    /* 顶栏 */
+    .navbar {
+      background-color: #f0f0f0;
+      padding: 15px;
+    }
+    /* 按钮样式 */
+    .navbar a {
+      background-color: transparent;
+      border: none;
+      padding: 5px 10px;
+      margin-right: 10px;
+      font-size: 16px;
+      color: #555555;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    /* 鼠标悬停时的样式 */
+    .navbar a:hover {
+      background-color: #eaeaea;
+      color: #55a7f3;
+    }
+    .content_container {
+        {#display: flex;#}
+        margin: 16px auto;
+        position: relative;
+        width: 90%;
+        background-color: white;
+    }
+    a {
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+}
+
+a::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: #55a7f3;
+  visibility: hidden;
+  transform: scaleX(0);
+  transition: transform 0.3s ease-in-out;
+}
+
+a:hover::after {
+  visibility: visible;
+  transform: scaleX(1);
+}
+
+    {% block css %}{% endblock %}
+
+    /* 页面底部样式 */
+    .footer {
+      background-color: #f0f0f0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    /* "About" 页面样式 */
+    .about {
+      font-size: 16px;
+      color: #333333;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .footer .author{
+        font-size: 12px;
+        color: rgba(51, 51, 51, 0.78);
+        {#margin: 5px auto;#}
+    }
+    /* 头像样式 */
+    .avatar {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 20px;
+      margin-bottom: 20px;
+    }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+    <div class="navbar">
+        <a href="/" style="font-size: large; font-weight: bold">Webird</a>
+        <a href="/records/">Records_Search</a>
+        <a href="/records_visualized/">Records Visualized</a>
+        <a href="/species/">Species</a>
+{#        <a href="/location">location</a>#}
+        <a href="/gallery/">Gallery</a>
+        <a href="/about/">About</a>
+        {% if user.is_authenticated %}
+            <a href="/management/">management</a>
+{#        	<a href="/img/show/">img_hosting</a>#}
+{#            <a href="/add">add</a>#}
+{#            <a href="/gallery_add/">add_gallery</a>#}
+            <a href="/logout/" style="float: right">logout</a>
+        {% endif %}
+    </div>
+    <div class="content_container">
+        {% block content %}{% endblock %}
+    </div>
+    <div class="footer">
+        <div class="about">
+            <img alt="Avatar" class="avatar" src={% static 'img/avatar.png' %} >
+                <div>
+                    <h2>Webirdie</h2>
+                    <p>I'm here to assist you anytime!</p>
+                </div>
+        </div>
+        <div class="author">
+            <p>Author: Richard</p>
+            <p>Agō, ergo sum.</p>
+        </div>
+  </div>
+</body>
+</html>

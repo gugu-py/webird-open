@@ -1,0 +1,83 @@
+#image {
+    width: 100%;
+    max-width: 1000px;
+    display: block;
+}
+.marker {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background-color: rgba(0, 225, 255, 0.7);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.marker a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: x-small;
+    text-align: center;
+}
+
+.marker:hover {
+    background-color: rgba(0, 191, 255, 1);
+}
+
+.marker:hover a {
+    text-decoration: none;
+}
+
+
+
+
+/*#lawn {*/
+/*    top: 45%;*/
+/*    left: 54%;*/
+/*}*/
+/*#building1 {*/
+/*    top: 39%;*/
+/*    left: 65%;*/
+/*}*/
+/*#internal_lake {*/
+/*    top: 38%;*/
+/*    left: 73%;*/
+/*}*/
+/*#yushan_academy{*/
+/*    top: 26%;*/
+/*    left: 82%;*/
+/*}*/
+/*#faculty_dorm{*/
+/*    top: 5%;*/
+/*    left: 69%;*/
+/*}*/
+/*#student_dorm{*/
+/*    top: 31%;*/
+/*    left: 45%;*/
+/*}*/
+/*#building2{*/
+/*    top: 30%;*/
+/*    left: 50%;*/
+/*}*/
+/*#playground{*/
+/*    top: 77%;*/
+/*    left: 42%;*/
+/*}*/
+/*#theatre{*/
+/*    top: 59%;*/
+/*    left: 51%;*/
+/*}*/
+/*#lake{*/
+/*    top: 65%;*/
+/*    left:89%;*/
+/*}*/
+/*#wood{*/
+/*    top: 65%;*/
+/*    left: 68%;*/
+/*}*/
+/*#kindergarten{*/
+/*    top: 84%;*/
+/*    left: 25%;*/
+/*}*/

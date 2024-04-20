@@ -1,0 +1,54 @@
+{% extends 'common.html' %}
+{% load static %}
+{% block css %}
+    body {
+      background-color: #f9f9f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      text-align: center;
+    }
+
+{#    img {#}
+{#      max-width: 400px;#}
+{#      margin-bottom: 20px;#}
+{#    }#}
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    a {
+      font-size: 16px;
+      color: #333;
+      text-decoration: none;
+      border: 2px solid #333;
+      padding: 10px 20px;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    a:hover {
+      background-color: #333;
+      color: #fff;
+    }
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <img alt="404 Image" src={% static 'img/NOT_FOUND.png' %} >
+        <h1>Ooops! Page flied away.</h1>
+{#        <p>The page you are looking for does not exist.</p>#}
+        <a href="/">Go back to home page</a>
+    </div>
+{% endblock %}

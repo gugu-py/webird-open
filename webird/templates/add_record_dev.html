@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>add_record</title>
+</head>
+<body>
+    <h1>Add Record</h1>
+    <div>
+        hint: use ctrl+f to find the species' name!
+    </div>
+    <form method="POST">
+        {% csrf_token %}
+        <p>{{ form.location }}</p>
+        <p>{{ form.bird_id }}</p>
+        <p>{{ form.author }}</p>
+        <p>{{ form.date }}</p>
+        <p>{{ form.num }}</p>
+        <input type="submit" value="Add">
+    </form>
+</body>
+</html>

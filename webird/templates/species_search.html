@@ -1,0 +1,87 @@
+{% extends 'common.html' %}
+{% load custom_filters %}
+
+{% block links %}
+{% endblock %}
+
+{% block css %}
+    .result {
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      transition: background-color 0.3s;
+    }
+
+    .result:hover {
+      background-color: #f9f9f9;
+    }
+
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .description {
+      font-size: 14px;
+      color: #777;
+    }
+
+    .pagination {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .pagination-link {
+      margin: 0 5px;
+      padding: 5px 10px;
+      color: #333;
+      text-decoration: none;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      transition: background-color 0.3s;
+    }
+
+    .pagination-link:hover {
+      background-color: #f9f9f9;
+    }
+{% endblock %}
+
+{% block content %}
+    <form method="get">
+        {{ form }}
+        <input type="submit" value="submit">
+    </form>
+    {% if result.count == 0 %}
+        <div>Nobody here but us chickens!</div>
+    {% endif %}
+    {% for item in result %}
+        <a href="{{ item.id | id_get_bird_single_name }}/" style="text-decoration: none; color: inherit;">
+        <div class="result">
+            <h2 class="title">
+                {{ item.id | id_get_bird_whole_name }}
+            </h2>
+            <div class="description">
+                <div>{{ item.chi_description }}</div>
+                <div>{{ item.eng_description }}</div>
+            </div>
+            {% if user.is_authenticated %}
+                <div>id: {{ item.id }}</div>
+            {% endif %}
+        </div>
+        </a>
+    {% endfor %}
+
+    <div class="pagination">
+        {% if result.has_previous %}
+            <a class="pagination-link" href="?page={{ result.previous_page_number }}&{{ query_params }}">«</a>
+        {% endif %}
+
+        {{ result.number }}
+
+        {% if result.has_next %}
+            <a class="pagination-link" href="?page={{ result.next_page_number }}&{{ query_params }}">»</a>
+        {% endif %}
+    </div>
+{% endblock %}

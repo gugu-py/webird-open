@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>webird</title>
+</head>
+<body>
+<h3>
+    Make sure these are correct!
+</h3>
+<h3>
+    If not, rename the species in the original file, and verify again!
+</h3>
+<h3>
+    The following content will be added to BirdInfo database:
+</h3>
+{% for name in names %}
+	<p>{{ name }};</p>
+{% endfor %}
+<div>
+    <a href="/management/">cancel</a>
+</div>
+<div>
+    <a href="/add_birdinfo_csv_verify/upload/">confirmed the names are all okay, and submit</a>
+</div>
+</body>
+</html>
